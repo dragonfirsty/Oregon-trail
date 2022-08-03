@@ -13,14 +13,15 @@ class Villager:
             return "Dont hurt me"
         else:
             damage = incoming_attack_value - self.defense 
-            self.health =  self.health - damage
+            self.health -= damage
+            self.health = self.health if self.health > 0 else 0
             if self.health == 0:
                 self.is_alive = False
-                return f"{self.is_alive},Target is dead!"
+                return (False, "Target is dead!")
             else:
                 return f"Vida atual: {self.health}"
     def normal_attack(self,target):
-        return self.check_health(target)                   
+       return target.check_health(self.attack)          
 
 
 class Mage(Villager):
@@ -31,4 +32,8 @@ class Mage(Villager):
         self.mana = 100
 
     def fire_ball(self,target):
-            ...
+        if self.mana > 20:
+            self.mana = self.mana - 20
+            return target.check_health(self.attack + 20)
+        else:
+            return (False, "Target is dead!")    
